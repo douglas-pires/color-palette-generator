@@ -1,7 +1,9 @@
 {
   "name": "palette-picker-generator",
   "scripts": {
-    "dev": "nuxt"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxtjs/eslint-module": "^1.1.0",
