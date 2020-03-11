@@ -1,0 +1,13 @@
+{
+  "name": "palette-picker-generator",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "dependencies": {
+    "@nuxtjs/eslint-module": "^1.1.0",
+    "nuxt": "^2.11.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.11.0"
+  }
+}
