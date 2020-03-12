@@ -3,7 +3,6 @@ export default {
     port: 3333
   },
   buildModules: ['@nuxtjs/vuetify'],
-
   serverMiddleware: [
     {
       path: '/api/palette-picker',
