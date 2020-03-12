@@ -1,8 +1,7 @@
 // http://colormind.io/api-access/
 import 'isomorphic-fetch'
-const app = require('express')()
 
-app.get('/', async (req, res) => {
+export default async function(req, res, next) {
   const data = await fetch('http://colormind.io/api/', {
     method: 'POST',
     body: JSON.stringify({
@@ -12,10 +11,5 @@ app.get('/', async (req, res) => {
     .then(result => result.json())
     .catch(console.log)
 
-  res.send(data)
-})
-
-export default {
-  path: '/api/palette-picker',
-  handler: app
+  res.end(JSON.stringify(data))
 }
