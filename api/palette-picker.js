@@ -3,7 +3,6 @@ import 'isomorphic-fetch'
 const app = require('express')()
 
 app.get('/', async (req, res) => {
-  console.log('')
   const data = await fetch('http://colormind.io/api/', {
     method: 'POST',
     body: JSON.stringify({
