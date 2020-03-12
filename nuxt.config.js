@@ -8,14 +8,14 @@ export default {
       src: 'nuxt.config.js',
       use: '@nuxtjs/now-builder',
       config: {
-        serverFiles: ['api/**']
+        serverFiles: ['~/api/**']
       }
     }
   ],
   serverMiddleware: [
     {
       path: '/api/palette-picker',
-      handler: '../api/palette-picker.js'
+      handler: '~/api/palette-picker.js'
     }
   ]
 }
