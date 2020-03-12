@@ -16,6 +16,6 @@ app.get('/', async (req, res) => {
 })
 
 export default {
-  path: 'api/palette-picker',
+  path: '/api/palette-picker',
   handler: app
 }
