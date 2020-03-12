@@ -13,5 +13,6 @@
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.0"
-  }
+  },
+  "license": "GNU General Public License"
 }
