@@ -15,7 +15,7 @@ app.get('/', async (req, res) => {
   res.send(data)
 })
 
-export default {
+module.exports = {
   path: '/api/palette-picker',
   handler: app
 }
