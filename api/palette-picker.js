@@ -17,5 +17,5 @@ app.get('/', async (req, res) => {
 
 module.exports = {
   path: 'api/palette-picker',
-  handler: app
+  handler: () => {}
 }
