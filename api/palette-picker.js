@@ -1,5 +1,5 @@
 // http://colormind.io/api-access/
-require('isomorphic-fetch')
+import 'isomorphic-fetch'
 const app = require('express')()
 
 app.get('/', async (req, res) => {
@@ -15,7 +15,7 @@ app.get('/', async (req, res) => {
   res.send(data)
 })
 
-module.exports = {
+export default {
   path: '/api/palette-picker',
   handler: app
 }
