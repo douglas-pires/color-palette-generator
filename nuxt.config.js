@@ -1,6 +1,6 @@
 import path from 'path'
 export default {
-  srcDir: '.',
+  srcDir: './',
   server: {
     port: 3333
   },
