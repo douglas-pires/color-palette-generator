@@ -1,3 +1,7 @@
+const moduleAlias = require('module-alias')
+moduleAlias.addAliases({
+  '@': __dirname + '/../'
+})
 export default {
   server: {
     port: 3333
@@ -6,7 +10,7 @@ export default {
   serverMiddleware: [
     {
       path: 'api/palette-picker',
-      handler: '../api/palette-picker.js'
+      handler: '@/api/palette-picker.js'
     }
   ]
 }
