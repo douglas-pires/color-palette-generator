@@ -7,7 +7,7 @@ export default {
   serverMiddleware: [
     {
       path: '/api/palette-picker',
-      handler: path.resolve(__dirname, '~/../api/palette-picker.js')
+      handler: '~/api/palette-picker.js'
     }
   ]
 }
