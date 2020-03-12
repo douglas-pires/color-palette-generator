@@ -1,3 +1,5 @@
+import path from 'path'
+console.log(path.resolve(__dirname + 'api/palette-picker.js'))
 export default {
   server: {
     port: 3333
@@ -6,7 +8,7 @@ export default {
   serverMiddleware: [
     {
       path: 'api/palette-picker',
-      handler: '~/api/palette-picker.js'
+      handler: path.resolve(__dirname + '/api/palette-picker.js')
     }
   ]
 }
