@@ -1,22 +1,22 @@
 ## Hey there!
 
-I've recently wrote an opensource tool to get my life easier as a front-end developer. It's called heyho.io and you can find its repository here.
+I've recently created an opensource tool to get my life easier as a front-end developer. It's called heyho.io and you can find its repository [here](https://github.com/heyhoio/heyho).
 
-I built it on top of Nuxt + Vuetify and it is a sum of several basic stuff that you can find everywhere, but I decided to put them all in one place.
+I built it on top of Nuxt + Vuetify and it is a sum of several basic stuff that you can find everywhere on internet, but I decided to put them all in one place.
 
-Since it's a simple project, I'm starting a series of posts where I'd like to share some experiences/code samples for each tool that was built there.
+Since it's a bunch simple projects, I'm starting a series of posts where I'd like to share some experiences/code samples for each tool that was built there.
 
 The first tool I will share here is the Palette Picker and Generator.
 
 ### Motivation
 
-The main motivation to create this component is that I wanted a tool to pick my favorite colors when developing faster, if not, randomize some nice color palette, not demanding do an extensive search for it over and over.
+The main motivation to create this component is that because I wanted a tool to pick my favorite colors when developing faster, if not, randomize some nice color palette, not demanding do an extensive search for it over and over.
 
 ### Why NUXT?
 
-Nuxt is an outstanding tool, developed on top of Vue, it creates universal apps (apps that can execute both on the client and the server side) easier. Nuxt still gives us methods like asyncData and provides access to the properties like isClient or isServer. Nuxt has several awesome tooling so the development process is extremely enjoyable.
+[Nuxt](https://nuxtjs.org/) is an outstanding tool, developed on top of [Vue](https://vuejs.org/), it creates universal apps (apps that can execute both on the client and the server side) easier. Nuxt still gives us methods like [asyncData](https://nuxtjs.org/api/#the-asyncdata-method) and provides access to the properties like [isClient or isServer](https://nuxtjs.org/api/configuration-build/#extend). Nuxt has several awesome tooling, so the development process itself is extremely enjoyable.
 
-And since the project's objective itself is to be SEO friendly, Nuxt is more than enough to achieve that.
+And since the project's objective itself is to be `SEO` friendly, Nuxt is more than enough to achieve that.
 
 ### Pre-requisites
 
@@ -24,7 +24,8 @@ And since the project's objective itself is to be SEO friendly, Nuxt is more tha
 - Pretty basic knowledge on VueJS
 - Some knowledge in yarn or npm
 
-Complexity: Basic
+### Complexity
+- Basic
 
 ## 1. Create a Nuxt project
 
@@ -44,7 +45,7 @@ Navigate to `palette-picker-generator`
 
 `cd .\x-team\palette-picker-generator`
 
-```
+```json
 {
   "name": "palette-picker-generator",
   "scripts": {
@@ -81,7 +82,7 @@ Create an `index.vue` file with the following:
 
 ## 3. Running the project
 
-You can run the project with either `npm run dev` or `yarn dev`. By default, Nuxt will run on `localhost:3000`. If the port is already on use, Nuxt will grab a random port to host the application. To control that, you will need either kill the application running on 3000, or set another port. To do this, you should create a `nuxt.config.js` to the root of the project with the following:
+You can run the project with either `npm run dev` or `yarn dev`. By default, Nuxt will run on `localhost:3000`. If the port is already on use, Nuxt will grab a random port to host the application. To control that, you will need either kill the application running on 3000, or set another port. To do this, you should create a `nuxt.config.js` (that's a pretty important config file. Find more [here](https://nuxtjs.org/api/configuration-server#basic-example-code-nuxt-config-js-code-)) to the root of the project with the following:
 
 ```javascript
 export default {
@@ -104,7 +105,11 @@ or
 Then, we will update `nuxt.config.js` adding the property `buildModules`:
 
 ```javascript
-buildModules: ['@nuxtjs/vuetify']
+export default {
+  // some config above
+  buildModules: ['@nuxtjs/vuetify']
+  // some config below
+}
 ```
 
 I'm not going to dive deeply into Vuetify, only the necessary for this tutorial.
@@ -161,7 +166,7 @@ This should show each card with something like this appearance:
 
 ## 6. Styling
 
-Now we are going to add some style to it. I choose for this project to use SASS. It has a lot of benefits, such as the use of functions, mixins, and a bunch of other really cool stuff. Besides that, is a pretty consolidated, if not the most, style sheet language.
+Now let's add some style to it. I choose for this project to use [SASS](https://sass-lang.com/). It has a lot of benefits, such as the use of functions, mixins, and a bunch of other really cool stuff. Besides that, is a pretty consolidated, if not the most, style sheet language.
 
 Inside the tag `<style></style>` you will insert:
 
@@ -212,19 +217,27 @@ It should result on this:
 
 ## 7. Some nice palette generator
 
-Currently we have a static page that will do nothing but show some pre-defined palettes. But we don't stop by there.
+Currently we have a static page that will do nothing but show some pre-defined palettes. But we wont't stop by there.
 
 For this project, we will use the [Colormind](http://colormind.io) API. They use machine learn to create color palettes. Pretty awesome, huh?
 
 Let's get started:
 
-Create a folder called `utils` in the application root. Then write:
+## 7.1 A request problem
+
+In order make a `http` request we could simply create a function that use `fetch` API to request some nice content, right? Yep, *almost* right. The problem with that approach is that if we choose to host our application using `https` and try to make a `http` request, well, we will find is [quite insecure](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content).
+
+To solve that, we should create a Nuxt's [serverMiddleware](https://nuxtjs.org/api/configuration-servermiddleware/). What it will do is use a [connect](https://github.com/senchalabs/connect) instance to register additional routes without need for an external server to handle `http/https` requests.
+
+The middleware is just a function that receives `request` and `response` objects and `next` function.
+
+To do that, we create a file in `api/palette-picker.js` in the application root. Then write:
 
 ```javascript
-const colormindUrl = 'http://colormind.io/api/'
+import 'isomorphic-fetch'
 
-export default () =>
-  fetch(colormindUrl, {
+export default async function(req, res, next) {
+  const data = await fetch('http://colormind.io/api/', {
     method: 'POST',
     body: JSON.stringify({
       model: 'default'
@@ -232,9 +245,20 @@ export default () =>
   })
     .then(result => result.json())
     .catch(console.log)
+
+  res.end(JSON.stringify(data))
+}
 ```
 
-Basically this function will `POST` to Colormind API with the data model we want to use to get palettes. It returns a array of `RGBs`, just like this:
+Note that we have to install `isomorphic-fetch` since `fetch` api is not available in server-side. To install it, type on your terminal:
+
+`yarn add isomorphic-fetch`
+
+or
+
+`npm install isomorphic-fetch`
+
+Now the function: basically this function will `POST` to Colormind API with the data model we want to use to get palettes. It returns a array of `RGBs`, just like this:
 
 ```json
 {
@@ -266,8 +290,12 @@ methods: {
       }, [])
       .join('')
   },
+
   async getPalette() {
-    const { result } = await fetchColors()
+    const { result } = await fetch('api/palette-picker')
+      .then(result => result.json())
+      .catch(console.log)
+
     const colors = result.map(colors => {
       const [r, g, b] = colors
       return this.toHex(r, g, b)
@@ -294,6 +322,44 @@ And in our template:
 </v-btn>
 ```
 
+## 8. Pick the color!
+
+Now we will implement a function to copy the color to clipboard when user clicks on it. Here's how:
+
+Add a `savePalette` function to `v-card` and pass the color to it.
+
+```html
+  <v-card
+    v-for="color in palette.colors"
+    :key="color"
+    :style="{ backgroundColor: `#${color}` }"
+    class="palette-picker-generator__palette-item"
+    @click="savePalette(color)"
+  >
+    <v-card-text>
+      {{ color }}
+    </v-card-text>
+  </v-card>
+```
+
+Then on `methods` object you implement as follows:
+
+```javascript
+methods: {
+  // some code above
+  savePalette(color) {
+    navigator.clipboard.writeText(`#${color}`)
+  }
+  // some code below
+}
+```
+
+It will copy the palette to your clipboard to use it in your project.
+
 ## 8. Conclusion
 
-And basically that's it. You can find the repository with all implementation details and the full code [here](https://github.com/douglas-pires/color-palette-generator)
+And basically that's it! You can do a lot more. For some more context, you can find the repository with all implementation details and the full code [here](https://github.com/douglas-pires/color-palette-generator) with some nice things, such as a Snackbar when user click on the color.
+
+Also, you can find the running example [here](https://color-palette-generator.now.sh).
+
+Again, if you are interest in the `HeyHo` project, you can find the repository [here](https://github.com/heyhoio/heyho). This series will continue eventually for the other tools too. So, keep tuned!
