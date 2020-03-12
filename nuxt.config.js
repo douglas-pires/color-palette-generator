@@ -6,7 +6,7 @@ export default {
   serverMiddleware: [
     {
       path: '/api/palette-picker',
-      handler: '../api/palette-picker.js'
+      handler: console.log(__dirname)
     }
   ]
 }
