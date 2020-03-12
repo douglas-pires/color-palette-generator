@@ -33,7 +33,6 @@
 
 <script>
 import Vue from 'vue'
-import fetchColors from '@/utils/palette-picker'
 import { generateName } from '@/utils/name-generator'
 
 export default Vue.extend({
@@ -64,7 +63,10 @@ export default Vue.extend({
         .join('')
     },
     async getPalette() {
-      const { result } = await fetchColors()
+      const { result } = await fetch('api/palette-picker')
+        .then(result => result.json())
+        .catch(console.log)
+
       const colors = result.map(colors => {
         const [r, g, b] = colors
         return this.toHex(r, g, b)
@@ -89,6 +91,10 @@ export default Vue.extend({
           name: 'Color Picker and Theme Viewer',
           content:
             'A color picker and theme viewer to get an ready-to-use visualization on some nice colors to use into your UI'
+        },
+        {
+          'http-equiv': 'Content-Security-Policy',
+          content: 'upgrade-insecure-requests'
         }
       ]
     }
