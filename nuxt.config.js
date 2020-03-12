@@ -4,9 +4,9 @@ export default {
   },
   buildModules: ['@nuxtjs/vuetify'],
   serverMiddleware: [
-    // {
-    //   path: 'api/palette-picker',
-    //   handler: '~/api/palette-picker'
-    // }
+    {
+      path: 'api/palette-picker',
+      handler: '~/api/palette-picker'
+    }
   ]
 }
